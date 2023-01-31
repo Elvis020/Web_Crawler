@@ -1,6 +1,5 @@
 import os
 from collections import deque
-from subprocess import getoutput
 
 import pytest
 from bs4 import BeautifulSoup
@@ -17,12 +16,12 @@ class TestUtils:
 
     def test_create_file_for_storing_results(self):
         msg = 'https://turntabl.io/blog/blog\nhttps://turntabl.io/blog/blogs/2019/04/15/turntabl-connectivity.html'
+        os_platform = {'Windows': "\\", "Linux": "/", "Darwin": "/"}
         base_path = os.path.dirname(__file__)
         create_file_for_storing_results(msg)
-        required = os.path.exists(os.path.abspath(os.path.join(base_path, '..', 'extracted_file')))
-        file = os.path.abspath(os.path.join(base_path, '..', 'extracted_file'))
-        assert True == required
-        assert True == os.path.isfile(file)
+        path = os.path.abspath(os.path.join(base_path, f'..{os_platform[platform.system()]}', 'extracted_file'))
+        assert True == os.path.isfile(path)
+        assert True == os.path.exists(path)
 
     def test_extract_all_web_links(self):
         web_links = {'https://www.turnabl.io': {'https://turntabl.io/blog', 'https://turntabl.io/aims',
@@ -55,14 +54,21 @@ class TestUtils:
 
     def test_get_related_pages(self, important_value):
         all_pages = important_value.find_all('a', href=True)
-        expected = {'/job', '/aims', '/', '/blog'}
+        expected = {'about-us.html',
+                    'contact-us.html',
+                    'index.html',
+                    'our-approach.html',
+                    'our-services.html',
+                    'privacy-policy.html',
+                    'terms-of-service.html'}
         assert expected == get_pages(all_pages, 'related')
-        assert 4 == len(get_pages(all_pages, 'related'))
+        assert 7 == len(get_pages(all_pages, 'related'))
 
     def test_get_non_related_pages(self, important_value):
         all_pages = important_value.find_all('a', href=True)
-        expected = {'https://twitter.com/turntablio', 'https://github.com/turntabl',
-                    'https://www.google.co.uk/maps/place/turntabl/@5.6326822,-0.2382382,19z/data=!3m1!4b1!4m13!1m7!3m6!1s0xfdf996579ca9ebd:0x99822538ef7ed82f!2sAchimota,+Ghana!3b1!8m2!3d5.612781!4d-0.234345!3m4!1s0xfdf9954d603e5b3:0xd24eb41c04c54f63!8m2!3d5.6326809!4d-0.237691'}
+        expected = {'https://github.com/turntabl',
+                    'https://medium.com/@turntabl.io',
+                    'https://twitter.com/turntablio'}
         assert expected == get_pages(all_pages, 'non_related')
         assert 3 == len(get_pages(all_pages, 'non_related'))
 

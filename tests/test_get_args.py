@@ -27,3 +27,10 @@ class TestGetArgs:
             rv, out = getstatusoutput(f'{prg} {flag}')
             assert rv == 0
             assert out.startswith('Gathering all links')
+
+    @pytest.mark.skip
+    def test_get_args_with_deepcrawl_params(self, prg):
+        for flag in [f'-d', f'--deepcrawl']:
+            rv, out = getstatusoutput(f'{prg} {flag}')
+            assert rv == 0
+            assert out.startswith('Gathering all links')

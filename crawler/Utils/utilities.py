@@ -62,7 +62,8 @@ def get_pages(url, option):
     my_result = None
     match option:
         case 'related':
-            my_result = filter(lambda x: x['href'] and x['href'].startswith('/'), url)
+            my_result = filter(
+                lambda x: x['href'] and not x['href'].startswith('http') and re.match("^[a-z]", x.get('href')), url)
         case 'non_related':
             my_result = filter(lambda x: x['href']
                                          and not x['href'].startswith('/')
@@ -94,3 +95,10 @@ def validate_url(url: str):
         return f"Error: {e.code}"
     except (ValueError, URLError) as e:
         return e
+
+
+def helper_function_to_gather_related_and_non_related_links(soup):
+    related_links = ThreadPool(3).apply_async(get_pages, (soup.find_all('a', href=True), 'related',))
+    non_related_links = ThreadPool(1).apply_async(get_pages, (soup.find_all('a', href=True), 'non_related',))
+    return related_links.get(), non_related_links.get()
+

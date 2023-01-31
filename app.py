@@ -1,9 +1,16 @@
-from crawler.Utils import *
-from crawler.Crawler import Crawler
 from crawler.CommandlineArgs import *
+from crawler.DeepCrawler import DeepCrawler
+from crawler.ShallowCrawler import ShallowCrawler
+from crawler.Utils import *
 
-crawler = Crawler()
-url = get_args().url
+
+args = get_args()
+url = args.url
+is_deep = args.deepcrawl
+
+# Selects the Crawler type based on the input
+choose_crawler = {True: DeepCrawler, False: ShallowCrawler}
+crawler = choose_crawler[is_deep]()
 
 
 @timing
