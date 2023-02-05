@@ -1,6 +1,7 @@
 import argparse
 
 
+# TODO: the user should be able to specify the number of threads
 def get_args():
     """Get the command-line arguments"""
     parser = argparse.ArgumentParser(

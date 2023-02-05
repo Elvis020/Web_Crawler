@@ -24,7 +24,7 @@ This program accepts an input url, and perform a web crawl on the URL, without u
 It lists all URL’s that are on the page of that URL, and then subsequently crawls the URLs within that same domain,  
 until all URL’s under the supplied domain have been crawled. 
 
-It then creates a file, called ```extracted_file``` containing all the URLs, obtained from the execution. This includes all the URLs, whether domain-related or not.
+It then creates a file, called ```results``` containing all the URLs, obtained from the execution. This includes all the URLs, whether domain-related or not.
 
 Example: If we crawl https://turntabl.io, we can find https://medium.com/@turntabl.io listed as it’s on that page, 
 however we don't crawl it. We will list and crawl https://turntabl.io/our-services.html.
@@ -34,7 +34,7 @@ however we don't crawl it. We will list and crawl https://turntabl.io/our-servic
 - [x] Scalability of running the application on large domains
 - [x] Concurrency
 - [x] Sufficient unit tests
-- [x] Presenting the results
+- [x] Presenting the results into a file
 
 ## Libraries
 * BeautifulSoup

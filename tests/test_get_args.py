@@ -1,10 +1,7 @@
-import logging
 import os
-from subprocess import getoutput, getstatusoutput
-
 import pytest
 
-from crawler.CommandlineArgs import *
+from subprocess import getstatusoutput
 
 
 class TestGetArgs:

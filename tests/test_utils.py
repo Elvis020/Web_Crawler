@@ -1,34 +1,40 @@
 import os
-from collections import deque
-
 import pytest
-from bs4 import BeautifulSoup
 
+from bs4 import BeautifulSoup
+from collections import deque
+from crawler.DeepCrawler import DeepCrawler
 from crawler.Utils.utilities import *
 
 
 class TestUtils:
     @pytest.fixture
-    def important_value(self):
-        url = 'https://turntabl.io'
-        response = decode_webpage(url).read().decode("utf-8")
-        return BeautifulSoup(response, 'html.parser')
+    def mocking_turntabl_website(self):
+        base_path = os.path.dirname(__file__)
+        path = os.path.join(base_path, 'mock_data/turntabl.io')
+        with open(path) as fb:
+            data = fb.readlines()
+        return BeautifulSoup('\n'.join(data), 'html.parser')
+
+    @pytest.fixture
+    def deep_crawler(self):
+        return DeepCrawler()
 
     def test_create_file_for_storing_results(self):
         msg = 'https://turntabl.io/blog/blog\nhttps://turntabl.io/blog/blogs/2019/04/15/turntabl-connectivity.html'
         os_platform = {'Windows': "\\", "Linux": "/", "Darwin": "/"}
         base_path = os.path.dirname(__file__)
         create_file_for_storing_results(msg)
-        path = os.path.abspath(os.path.join(base_path, f'..{os_platform[platform.system()]}', 'extracted_file'))
+        path = os.path.abspath(os.path.join(base_path, f'..{os_platform[platform.system()]}', 'results'))
         assert True == os.path.isfile(path)
         assert True == os.path.exists(path)
 
-    def test_extract_all_web_links(self):
+    def test_extract_all_web_links(self, deep_crawler):
         web_links = {'https://www.turnabl.io': {'https://turntabl.io/blog', 'https://turntabl.io/aims',
                                                 'https://turntabl.io/job'}}
         required = len({'https://www.turnabl.io', 'https://turntabl.io/blog', 'https://turntabl.io/aims',
                         'https://turntabl.io/job'})
-        assert required == len(extract_all_web_links(web_links))
+        assert required == len(deep_crawler.extract_all_web_links(web_links))
 
     def test_combine_dictionary_keys_and_values_1(self):
         test_dictionary = {'a': 'b', 'c': 'd'}
@@ -52,8 +58,8 @@ class TestUtils:
         response = decode_webpage(url)
         assert 404 == response.getcode()
 
-    def test_get_related_pages(self, important_value):
-        all_pages = important_value.find_all('a', href=True)
+    def test_get_related_pages(self, mocking_turntabl_website):
+        all_pages = mocking_turntabl_website.find_all('a', href=True)
         expected = {'about-us.html',
                     'contact-us.html',
                     'index.html',
@@ -64,8 +70,8 @@ class TestUtils:
         assert expected == get_pages(all_pages, 'related')
         assert 7 == len(get_pages(all_pages, 'related'))
 
-    def test_get_non_related_pages(self, important_value):
-        all_pages = important_value.find_all('a', href=True)
+    def test_get_non_related_pages(self, mocking_turntabl_website):
+        all_pages = mocking_turntabl_website.find_all('a', href=True)
         expected = {'https://github.com/turntabl',
                     'https://medium.com/@turntabl.io',
                     'https://twitter.com/turntablio'}

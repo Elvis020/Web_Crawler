@@ -1,7 +1,7 @@
 import os
-from pathlib import Path
-
 import pytest
+
+from pathlib import Path
 
 from crawler.ShallowCrawler import ShallowCrawler
 
@@ -28,7 +28,7 @@ class TestCrawler:
         crawler, domain = crawler
         base_path = os.path.dirname(__file__)
         crawler.gather_links_into_file(domain)
-        path_of_file = os.path.abspath(os.path.join(base_path, '..', 'extracted_file'))
+        path_of_file = os.path.abspath(os.path.join(base_path, '..', 'results'))
         expected = Path(path_of_file)
 
         assert True == expected.exists()
