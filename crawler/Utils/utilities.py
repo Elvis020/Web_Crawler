@@ -91,8 +91,8 @@ def validate_url(url: str):
         return e
 
 
-def gather_links(soup):
+def gather_links(soup, num_of_threads):
     """A function for gathering both related and non-related links"""
-    related_links = ThreadPool(3).apply_async(get_pages, (soup.find_all('a', href=True), 'related',))
-    non_related_links = ThreadPool(1).apply_async(get_pages, (soup.find_all('a', href=True), 'non_related',))
+    related_links = ThreadPool(num_of_threads).apply_async(get_pages, (soup.find_all('a', href=True), 'related',))
+    non_related_links = ThreadPool(num_of_threads // 2).apply_async(get_pages, (soup.find_all('a', href=True), 'non_related',))
     return related_links.get(), non_related_links.get()

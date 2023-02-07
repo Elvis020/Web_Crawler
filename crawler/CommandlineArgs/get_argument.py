@@ -1,7 +1,6 @@
 import argparse
 
 
-# TODO: the user should be able to specify the number of threads
 def get_args():
     """Get the command-line arguments"""
     parser = argparse.ArgumentParser(
@@ -23,4 +22,10 @@ def get_args():
                         metavar='bool',
                         type=bool,
                         default=False)
+    parser.add_argument('-t',
+                        '--threads',
+                        help='This indicates the number of threads the application should use for crawling from the user',
+                        metavar='int',
+                        type=int,
+                        default=5)
     return parser.parse_args()

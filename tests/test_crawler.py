@@ -13,7 +13,7 @@ class TestCrawler:
 
     def test_gather_all_links_under_domain(self, crawler):
         crawler, domain = crawler
-        related_links, _ = crawler.gather_all_weblinks(domain)
+        related_links, _ = crawler.map_weblinks(domain)
         assert 7 == len(related_links)
         assert ('https://turntabl.io/our-services.html' in related_links) == True
         assert ('https://turntabl.io/terms-of-service.html' in related_links) == True
@@ -21,7 +21,7 @@ class TestCrawler:
 
     def test_get_all_links(self, crawler):
         crawler, domain = crawler
-        related, unrelated = crawler.gather_all_weblinks(domain)
+        related, unrelated = crawler.map_weblinks(domain)
         assert len(related.union(unrelated)) > 7
 
     def test_gather_links_into_file(self, crawler):

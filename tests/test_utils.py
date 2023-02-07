@@ -3,7 +3,7 @@ import pytest
 
 from bs4 import BeautifulSoup
 from collections import deque
-from crawler.DeepCrawler import DeepCrawler
+from crawler.DeepCrawler import DeepCrawler, extract_all_web_links
 from crawler.Utils.utilities import *
 
 
@@ -34,7 +34,7 @@ class TestUtils:
                                                 'https://turntabl.io/job'}}
         required = len({'https://www.turnabl.io', 'https://turntabl.io/blog', 'https://turntabl.io/aims',
                         'https://turntabl.io/job'})
-        assert required == len(deep_crawler.extract_all_web_links(web_links))
+        assert required == len(extract_all_web_links(web_links,5))
 
     def test_combine_dictionary_keys_and_values_1(self):
         test_dictionary = {'a': 'b', 'c': 'd'}

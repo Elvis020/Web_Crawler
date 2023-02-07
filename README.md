@@ -44,8 +44,13 @@ however we don't crawl it. We will list and crawl https://turntabl.io/our-servic
 
 ## Quickstart
   * After cloning the crawler, you will need to know if your website/url is crawl-able  
-    * The app is executed using the command <br> ```python app.py -u url-name```.  <br>This executes it without any deepcrawl, it just gathers the links on the webpage and is suitable for webpages with all links leading to the same webpage. An example of such website is: http://turntabl.io
-    * If you have a domain/website with crawl-able links eg:http://books.toscrape.com, you can run it with the following command <br> ```python app.py -u url-name -d``` or ```python app.py -u url-name --deepcrawl```
+    * The app is executed using the command <br> ```python app.py -u url-name --threads 10```.  
+      <br>This executes it without any deepcrawl with a maximum of 10 threads, it just gathers the 
+      links on the webpage and is suitable for webpages with all links leading to the same webpage. 
+    * An example of such website is: http://turntabl.io
+    * If you have a domain/website with crawl-able links eg:http://books.toscrape.com, you can 
+      run it with the following command <br> ```python app.py -u url-name -d -t 10``` or ```python 
+      app.py -u url-name --deepcrawl --threads 10```
   * For more information, you can use the command: ```python -h```
 
 

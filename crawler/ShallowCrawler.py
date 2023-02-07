@@ -4,12 +4,15 @@ from crawler.Crawler import Crawler
 
 
 class ShallowCrawler(Crawler):
-    def gather_all_weblinks(self, input_url):
+    def __init__(self, num_of_threads=5):
+        super().__init__(num_of_threads=num_of_threads)
+
+    def map_weblinks(self, input_url):
         """Gathering all the weblinks"""
         print('Gathering all links...')
         response = decode_webpage(input_url).read().decode("utf-8")
         soup = BeautifulSoup(response, 'html.parser')
-        related_links, non_related_links = gather_links(soup)
+        related_links, non_related_links = gather_links(soup, self.num_of_threads)
 
         # For debugging purposes
         # logging.log(msg=f'Active threads:{threading.activeCount()}', level=logging.WARN)
@@ -20,6 +23,6 @@ class ShallowCrawler(Crawler):
 
     def gather_links_into_file(self, url):
         """Calls the function that creates a file for storing the results"""
-        related, unrelated = self.gather_all_weblinks(url)
+        related, unrelated = self.map_weblinks(url)
         all_links = related.union(unrelated)
         return create_file_for_storing_results(all_links)

@@ -7,8 +7,9 @@ from crawler.Utils import *
 args = get_args()
 url = args.url
 is_deep = args.deepcrawl
+number_of_threads = args.threads
 choose_crawler = {True: DeepCrawler, False: ShallowCrawler}
-crawler = choose_crawler[is_deep]()
+crawler = choose_crawler[is_deep](number_of_threads)
 
 
 @timing
